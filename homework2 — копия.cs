@@ -6,21 +6,12 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp5
 {
-    class Program
+    class Parse
     {
-        static void Main(string[] args)
-        {
-            while (true)
-            {
-                var s = Console.ReadLine();
-                Console.WriteLine(Parse(s));
-            }
-        }
-
-        static int Parse(string s)
+        private int parse (string s)
         {
             int index = 0;
-            int num = Num(s, ref index);
+            int num = faktorial(s, ref index);
             while (index < s.Length)
             {
                 if (s[index] == '+')
@@ -28,12 +19,12 @@ namespace ConsoleApp5
                     index++;
                     int Newint = index;
                     int b = Num(s, ref index);
-                    if ((index < s.Length)&&(s[index]=='*'||(s[index]=='/')))
+                    if ((index < s.Length) && (s[index] == '*' || (s[index] == '/')))
                     {
                         index = Newint;
                         num += UmDel(s, ref index);
                     }
-                    else 
+                    else
                     {
                         num += b;
                     }
@@ -53,7 +44,7 @@ namespace ConsoleApp5
                         num -= b;
                     }
                 }
-                else if (s[index]=='*')
+                else if (s[index] == '*')
                 {
                     index++;
                     int b = Num(s, ref index);
@@ -75,7 +66,10 @@ namespace ConsoleApp5
             return num;
         }
 
-        static int Num(string s, ref int i)
+    }
+    class Num
+    {
+        protected int checkTheNumber (string s, ref int i)
         {
             string buff = "0";
             for (; i < s.Length && char.IsDigit(s[i]); i++)
@@ -85,19 +79,21 @@ namespace ConsoleApp5
 
             return int.Parse(buff);//01
         }
-        // Для умножения и деления 
-        static int UmDel (string s , ref int i)
+    }
+    class UnDel 
+    {
+        private int MulDiv (string s, ref int i)
         {
             int numirbl = Num(s, ref i);
-            while (i<s.Length && (s[i]== '*'|| s[i] == '/'))
+            while (i < s.Length && (s[i] == '*' || s[i] == '/'))
             {
-                if (s[i]=='*')
+                if (s[i] == '*')
                 {
                     i++;
                     int q = Num(s, ref i);
                     numirbl *= q;
                 }
-                else if (s[i]=='/')
+                else if (s[i] == '/')
                 {
                     i++;
                     int q = Num(s, ref i);
@@ -105,6 +101,22 @@ namespace ConsoleApp5
                 }
             }
             return numirbl;
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            while (true)
+            {
+                var dateNow = DateTime.Now;
+                Console.WriteLine(dateNow);
+                var s = Console.ReadLine();
+                Console.WriteLine(Parse(s));
+                var dateNow2 = DateTime.Now;
+                Console.WriteLine(dateNow-dateNow2);
+
+            }
         }
     }
 }
