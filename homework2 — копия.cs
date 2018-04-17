@@ -6,19 +6,32 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp5
 {
+
     class Parse
     {
-        private int parse (string s)
+        protected string s;
+        private int index;
+        public override string ToString()
         {
-            int index = 0;
-            int num = faktorial(s, ref index);
+            return $"s: {s}";
+        }
+
+        public virtual int Parse(string s)
+        {
+            this.s = s;
+            index = 0;
+            return SumSub();
+        }
+        private int parse ()
+        {
+            int num = MulDiv();
             while (index < s.Length)
             {
                 if (s[index] == '+')
                 {
                     index++;
                     int Newint = index;
-                    int b = Num(s, ref index);
+                    int b = Num();
                     if ((index < s.Length) && (s[index] == '*' || (s[index] == '/')))
                     {
                         index = Newint;
@@ -33,11 +46,11 @@ namespace ConsoleApp5
                 {
                     index++;
                     int Newint = index;
-                    int b = Num(s, ref index);
+                    int b = Num();
                     if ((index < s.Length) && (s[index] == '*' || (s[index] == '/')))
                     {
                         index = Newint;
-                        num -= UmDel(s, ref index);
+                        num -= UmDel();
                     }
                     else
                     {
@@ -47,13 +60,13 @@ namespace ConsoleApp5
                 else if (s[index] == '*')
                 {
                     index++;
-                    int b = Num(s, ref index);
+                    int b = Num();
                     num *= b;
                 }
                 else if (s[index] == '/')
                 {
                     index++;
-                    int b = Num(s, ref index);
+                    int b = Num();
                     num /= b;
                 }
                 else
@@ -65,11 +78,7 @@ namespace ConsoleApp5
 
             return num;
         }
-
-    }
-    class Num
-    {
-        protected int checkTheNumber (string s, ref int i)
+        private int checkTheNumber(string s, ref int i)
         {
             string buff = "0";
             for (; i < s.Length && char.IsDigit(s[i]); i++)
@@ -79,10 +88,10 @@ namespace ConsoleApp5
 
             return int.Parse(buff);//01
         }
-    }
-    class UnDel 
-    {
-        private int MulDiv (string s, ref int i)
+
+
+
+        private int MulDiv(string s, ref int i)
         {
             int numirbl = Num(s, ref i);
             while (i < s.Length && (s[i] == '*' || s[i] == '/'))
@@ -102,9 +111,9 @@ namespace ConsoleApp5
             }
             return numirbl;
         }
-    }
-    class Program
-    {
+
+
+
         static void Main(string[] args)
         {
             while (true)
@@ -114,10 +123,27 @@ namespace ConsoleApp5
                 var s = Console.ReadLine();
                 Console.WriteLine(Parse(s));
                 var dateNow2 = DateTime.Now;
-                Console.WriteLine(dateNow-dateNow2);
+                Console.WriteLine(dateNow - dateNow2);
 
             }
         }
+
     }
+    class Parser : Parse
+    {
+        public override int Parse(string s)
+        {
+            var time12 = DateTime.Now;
+            var r = base.Parse(s);
+            Console.WriteLine((DateTime.Now - time12).TotalMilliseconds);
+            return r;
+        }
+
+        public void PrintS()
+        {
+            Console.WriteLine($"PrintS: {s}");
+        }
+    }
+       
 }
 
